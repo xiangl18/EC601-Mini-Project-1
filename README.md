@@ -14,12 +14,12 @@ access_token_secret = ''
 ```
 
 3. Please run the main.py, then there will be instructions as:  
-```python
-Please inpute path:  
-Please inpute frame_rate: 
+```cmd
+Please input path:  
+Please input frame_rate: 
 ```
 and
-```python
+```cmd
 Please input a searching keyword:
 ```
 if you choose the search method. Please input them by order, then you will get the images and the video made by these images in the folder you have input before.  
