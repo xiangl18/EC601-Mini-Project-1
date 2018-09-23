@@ -10,7 +10,7 @@ from PIL import Image
 def label(file):
     path = os.getcwd()
     # Please add you json into the folder with all other code files.
-    # edit and add your own json file here,replace the "\My First Project-bbdc176f5fe1.json".
+    # edit and add your own json file here, replace the "\My First Project-bbdc176f5fe1.json".
     try:
         filename = path + "\My First Project-bbdc176f5fe1.json"
         credentials = service_account.Credentials.from_service_account_file(filename)
