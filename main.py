@@ -3,7 +3,9 @@ import get
 import label_process
 
 path = input('Please inpute path：') 
-frame_rate = input('Please inpute frame_rate：')
+frame_rate = input('Please inpute frame rate(frame rate should be input by decimals):')
+
+：')
 
 # you can also get user's own homeline by using line 9 as  
 # get.twitter_images(path)
