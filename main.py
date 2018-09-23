@@ -21,7 +21,7 @@ while True:
   except ValueError:
       print("Frame rate not a number, please try again")
 
-# you can also get user's own homeline by using line 9 as:  
+# you can also get user's own homeline by using line 25 as:  
 # get.twitter_images(path)
 get.search_images(path)
 get.image_process(path, 900, 600)
