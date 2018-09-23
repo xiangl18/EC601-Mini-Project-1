@@ -2,7 +2,7 @@ import video
 import get
 import label_process
 
-path = input('Please inpute path：') # path = 'G:/Images/'
+path = input('Please inpute path：') 
 frame_rate = input('Please inpute frame_rate：')
 
 # get.twitter_images(path)
