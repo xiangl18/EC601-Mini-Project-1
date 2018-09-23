@@ -1,6 +1,5 @@
 import tweepy
 import wget
-import images
 import os
 from PIL import Image
 
