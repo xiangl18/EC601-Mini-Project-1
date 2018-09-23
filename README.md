@@ -5,7 +5,7 @@ How To Use
 For users who run this project for the first time:  
 1. Please dowload all files to one folder you have created, then add your own google vision credential file(json) to this folder, and edit the line 12 in googlevision.py, change the .json to your own file name.  
 
-2. Edit the get.py, change the twitter api as follow to your own:
+2. Edit the get.py in the following lines and change the twitter api key your own:
 ```python
 consumer_key = ''
 consumer_secret = ''
