@@ -1,5 +1,4 @@
-import ffmpeg
-import subprocess
+import subprocess 
 
 
 # make video through FFMPEG.
