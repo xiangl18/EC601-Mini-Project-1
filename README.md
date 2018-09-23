@@ -6,4 +6,9 @@ For users who run this project for the first time:<br>1. Please dowload all file
 
 Upgrade 9.23
 ---
-1. Fix the fail to add google vision key to the environment bug in the googleVision.py.<br><br>2. Add warning function for the get.py in case the twitter developer key is invalid, and add warnings for other exceptions.<br><br>3. Add instruction for inputing frame rate.
+Made some modification and upgrades:  
+1. Fix the fail to add google vision key to the environment bug in the googleVision.py.  
+
+2. Add warning function for the get.py in case the twitter developer key is invalid, and add warnings for other exceptions.  
+
+3. Add instruction for inputing frame rate.
