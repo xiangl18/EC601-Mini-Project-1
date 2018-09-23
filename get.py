@@ -6,10 +6,11 @@ from PIL import Image
 
 
 # get images from twitter by using tweepy api.
-consumer_key = 'y3EW8GEhoAfbSw7ecoMXVSCqF'
-consumer_secret = 'tnz0EegRPjeZvzaUWyUe02TtMqyzInhcfqKJB8Q0YkxnPIbQvM'
-access_token = '1039252031230365696-SX6mxXI9EEHRFExgN7pnM1PsKquACa'
-access_token_secret = 'MMh9WiXEjZOtWs30lTwBe1OiZ7UowbStIopCXZbdLUVvR'
+# add your own twitter developer key.
+consumer_key = ''
+consumer_secret = ''
+access_token = ''
+access_token_secret = ''
 
 
 # get images from a user's homeline.
