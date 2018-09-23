@@ -14,10 +14,14 @@ access_token_secret = ''
 
 # get images from a user's homeline.
 def twitter_images(path):
-    auth = tweepy.OAuthHandler(consumer_key, consumer_secret)
-    auth.set_access_token(access_token, access_token_secret)
-    api = tweepy.API(auth)
-    public_tweets = api.home_timeline(count=100)
+    try:
+        auth = tweepy.OAuthHandler(consumer_key, consumer_secret)
+        auth.set_access_token(access_token, access_token_secret)
+        api = tweepy.API(auth)
+        public_tweets = api.home_timeline(count=100)
+    except tweepy.error.TweepError:
+        raise Warning('fail to access the twitter by using key')
+    
     try:
         media_files = set()
         for status in public_tweets:
@@ -32,9 +36,13 @@ def twitter_images(path):
 
 # get images by searching from a user's homeline.
 def search_images(path):
-    auth = tweepy.OAuthHandler(consumer_key, consumer_secret)
-    auth.set_access_token(access_token, access_token_secret)
-    api = tweepy.API(auth)
+    try:
+        auth = tweepy.OAuthHandler(consumer_key, consumer_secret)
+        auth.set_access_token(access_token, access_token_secret)
+        api = tweepy.API(auth)
+    except tweepy.error.TweepError:
+        raise Warning('fail to access the twitter by using key')
+        
     keyword = input('Please input a searching keyword：')
     users = api.search_users(keyword, per_page=5, page=1)
     user_list = []
