@@ -4,7 +4,7 @@ import get
 import label_process
 
 while True:
-  path = input('Please input path(Please don't forget to add "\" at the end of your path):')
+  path = input('Please input path(Please add "\" at the end of your path):')
   # Provide a default
   if not path:
     path = "./"
