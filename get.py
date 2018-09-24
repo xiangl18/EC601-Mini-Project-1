@@ -49,7 +49,7 @@ def search_images(path):
     for user in users:
         user_list.append(user.name)
     if len(user_list) == 0:
-        raise warning("No result found")
+        raise Warning("No result found")
 
     for name in user_list:
         try:
