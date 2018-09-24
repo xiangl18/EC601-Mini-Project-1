@@ -15,7 +15,7 @@ while True:
     break
 
 while True:
-  frame_rate = input('Please inpute frame rate (frame rate should be input by decimals):')
+  frame_rate = input('Please inpute frame rate (Frame rate should be input by decimals):')
   try:
       float(frame_rate)
       break
