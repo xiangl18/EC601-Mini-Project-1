@@ -4,7 +4,7 @@ import get
 import label_process
 
 while True:
-  path = input('Please input path:')
+  path = input('Please input path(Please don't forget to add "\" at the end of your path):')
   # Provide a default
   if not path:
     path = "./"
@@ -26,6 +26,8 @@ while True:
 get.twitter_images(path)
 #you can also search images from users' homeline by using line 28 as: 
 #get.search_images(path)
+               
+#It is better to resize images into smaller size if there are lots of images needed to be transformed.              
 get.image_process(path, 900, 600)
 label_process.srt(path, frame_rate)
 video.process_video(path, frame_rate)
