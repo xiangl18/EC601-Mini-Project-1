@@ -6,8 +6,11 @@ import label_process
 while True:
   path = input('Please input path(Please add "\" at the end of your path):')
   # Provide a default
-  if not path:
-    path = "./"
+    if not path:
+      default = os.getcwd()
+      path = default + "/images/"
+      if (not os.path.exists(path)):
+        os.mkdir(path)
   # Check whether the file is writable
   if not os.access(path, os.W_OK):
     print("Path not writable, please try again")
