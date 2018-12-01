@@ -12,23 +12,26 @@ import mysql
 import mongodb
 
 
+
 mysql_api = mysql.MySQL()
 mongodb_api = mongodb.MongoDB()
 
 class DatabaseAPI(object):
 
     def __init__(self):
-        self.consumer_key = ''
-        self.consumer_secret = ''
-        self.access_token = ''
-        self.access_token_secret = ''
+        self.consumer_key = 'e1iimKWJXbW1xSZVN8tGMRzaL'
+        self.consumer_secret = 'BqE6n2QXF1n7KbZPAy0HVL8ZS2KLHEiGWcoW7ZX3UrX4KDOkcG'
+        self.access_token = '1039252031230365696-qKP1gGOODFBU3zPe0NY1HHV0u0lzw3'
+        self.access_token_secret = 'wna1Qg9FdzGa6wOc27fCana0qTxnmcc8bR5VxUXJgacF9'
         self.username = None
         self.output = {}
         self.url_list = []
         self.name_list = []
-        self.framerate = 1 # As default
+        self.framerate = 1
         self.error = None
         self.id = 0
+        self.width = 900
+        self.height = 600
         while True:
             self.path = input('Please input path(Please add "\" at the end of your path):')
             # Provide a default
@@ -51,10 +54,7 @@ class DatabaseAPI(object):
             self.username = input('Please input a username：')
             public_tweets = api.user_timeline(screen_name=self.username, count=count, include_rts=False, exclude_replies=True)
         except tweepy.error.TweepError:
-            log_record = 'fail to access the twitter by using key. Error: {}'.format(str(tweepy.error.TweepError))
-            mysql_api.mysql_log(log_record)
-            mongodb_api.mongodb_log(log_record)
-            raise Exception('fail to access the twitter by using key')
+            raise Warning('fail to access the twitter by using key')
         try:
             media_files = set()
             for status in public_tweets:
@@ -87,10 +87,10 @@ class DatabaseAPI(object):
             auth.set_access_token(self.access_token, self.access_token_secret)
             api = tweepy.API(auth)
         except tweepy.error.TweepError:
-            log_record = 'fail to access the twitter by using key. Error: {}'.format(str(tweepy.error.TweepError))
+            log_record = 'Error: {}'.format(str(tweepy.error.TweepError))
             mysql_api.mysql_log(log_record)
             mongodb_api.mongodb_log(log_record)
-            raise Exception('fail to access the twitter by using key')
+            raise Warning('fail to access the twitter by using key')
 
         keyword = input('Please input a searching keyword：')
         users = api.search_users(keyword, per_page=5, page=1)
@@ -107,9 +107,6 @@ class DatabaseAPI(object):
             try:
                 public_tweets = api.user_timeline(screen_name=name, count=50)
             except Exception:
-                log_record = 'No timeline for this user'
-                mysql_api.mysql_log(log_record)
-                mongodb_api.mongodb_log(log_record)
                 print("No timeline for this user")
                 continue
             try:
@@ -146,11 +143,11 @@ class DatabaseAPI(object):
             filename = self.path + "\My First Project-78c9371a06a3.json"
             credentials = service_account.Credentials.from_service_account_file(filename)
             client = vision.ImageAnnotatorClient(credentials=credentials)
-        except Exception:
-            log_record = 'fail to add the json file. Error: {}'.format(str(Exception))
+        except:
+            log_record = 'fail to add the json file'
             mysql_api.mysql_log(log_record)
             mongodb_api.mongodb_log(log_record)
-            raise Exception("fail to add the json file")
+            raise Warning("fail to add the json file")
 
         try:
             n = 0
@@ -232,7 +229,21 @@ class DatabaseAPI(object):
             print(user)
 
     def statistics(self):
-        mysql_record = mysql_api.mysql_statistics()
-        print(mysql_record[0], 'logs in MySQL Database.')
-        mongodb_record  = mongodb_api.mongodb_statistics()
-        print(mongodb_record, 'logs in MongoDB Databse.')
+        mysql_record, mysql_collection = mysql_api.mysql_statistics()
+        mongodb_record, mongodb_collection = mongodb_api.mongodb_statistics()
+        print(mysql_record[0], 'logs in MySQL Database.\n')
+        print('The 3 most  popular labels in MySQL Database are:\n'
+              '{c1} for {c1x} times\n'
+              '{c2} for {c2x} times\n'
+              '{c3} for {c3x} times\n'.format(c1=mysql_collection[0][0], c1x=mysql_collection[0][1],
+                                            c2=mysql_collection[1][0], c2x=mysql_collection[1][1],
+                                            c3=mysql_collection[2][0], c3x=mysql_collection[2][1]))
+        print(mongodb_record, 'logs in MongoDB Databse.\n')
+        print('The 3 most  popular labels in MongoDB Database are:\n'
+              '{c1} for {c1x} times\n'
+              '{c2} for {c2x} times\n'
+              '{c3} for {c3x} times\n'.format(c1=mongodb_collection[0][0], c1x=mongodb_collection[0][1],
+                                            c2=mongodb_collection[1][0], c2x=mongodb_collection[1][1],
+                                            c3=mongodb_collection[2][0], c3x=mongodb_collection[2][1]))
+
+
