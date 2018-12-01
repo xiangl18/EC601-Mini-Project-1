@@ -8,7 +8,7 @@ class MongoDB(object):
             mongodb = pymongo.MongoClient('mongodb://localhost')
             self.mongodb = mongodb['twitter_database']
         except Exception:
-            raise Exception('fail to connect to MongoDB!')
+            raise Exception('fail to connect to MongoDB')
 
     def mongo_log(self, log_record='Unknown'):
         if self.error:
