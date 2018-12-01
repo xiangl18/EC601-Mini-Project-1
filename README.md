@@ -84,6 +84,6 @@ You can also build the database by inputing following commands:
 ``` Bash  
 > use twitter_database
 ```
-You can then run the test1.py for testing the function in api.
+You can then run the test1.py for testing functions in api.
 
 
