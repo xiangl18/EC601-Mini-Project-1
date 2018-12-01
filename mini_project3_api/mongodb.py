@@ -29,10 +29,8 @@ class MongoDB(object):
         try:
             img_info = self.mongodb['mongodb_label']
             img_info.insert_one(doc)
-            # cursor = img_info.find({'user_id': username})
         except Exception:
             self.error = Exception
-            # self.mongo_log()
             raise Exception
 
     def mongodb_search(self, key):
