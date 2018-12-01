@@ -51,7 +51,10 @@ class DatabaseAPI(object):
             self.username = input('Please input a username：')
             public_tweets = api.user_timeline(screen_name=self.username, count=count, include_rts=False, exclude_replies=True)
         except tweepy.error.TweepError:
-            raise Warning('fail to access the twitter by using key')
+            log_record = 'fail to access the twitter by using key. Error: {}'.format(str(tweepy.error.TweepError))
+            mysql_api.mysql_log(log_record)
+            mongodb_api.mongodb_log(log_record)
+            raise Exception('fail to access the twitter by using key')
         try:
             media_files = set()
             for status in public_tweets:
@@ -84,10 +87,10 @@ class DatabaseAPI(object):
             auth.set_access_token(self.access_token, self.access_token_secret)
             api = tweepy.API(auth)
         except tweepy.error.TweepError:
-            log_record = 'Error: {}'.format(str(tweepy.error.TweepError))
+            log_record = 'fail to access the twitter by using key. Error: {}'.format(str(tweepy.error.TweepError))
             mysql_api.mysql_log(log_record)
             mongodb_api.mongodb_log(log_record)
-            raise Warning('fail to access the twitter by using key')
+            raise Exception('fail to access the twitter by using key')
 
         keyword = input('Please input a searching keyword：')
         users = api.search_users(keyword, per_page=5, page=1)
@@ -104,6 +107,9 @@ class DatabaseAPI(object):
             try:
                 public_tweets = api.user_timeline(screen_name=name, count=50)
             except Exception:
+                log_record = 'No timeline for this user'
+                mysql_api.mysql_log(log_record)
+                mongodb_api.mongodb_log(log_record)
                 print("No timeline for this user")
                 continue
             try:
@@ -140,11 +146,11 @@ class DatabaseAPI(object):
             filename = self.path + "\My First Project-78c9371a06a3.json"
             credentials = service_account.Credentials.from_service_account_file(filename)
             client = vision.ImageAnnotatorClient(credentials=credentials)
-        except:
-            log_record = 'fail to add the json file'
+        except Exception:
+            log_record = 'fail to add the json file. Error: {}'.format(str(Exception))
             mysql_api.mysql_log(log_record)
             mongodb_api.mongodb_log(log_record)
-            raise Warning("fail to add the json file")
+            raise Exception("fail to add the json file")
 
         try:
             n = 0
