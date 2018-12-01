@@ -3,16 +3,15 @@ from datetime import datetime as dt
 
 class MongoDB(object):
     def __init__(self):
-        self.error = None
         try:
             mongoDB = pymongo.MongoClient('mongodb://localhost:27017/')
             self.mongodb = mongoDB['twitter_database']
         except Exception:
+            log_record = 'fail to connect to MongoDB. Error: {}'.format(str(Exception))
+            MongoDB.mongodb_log(log_record)
             raise Exception('fail to connect to MongoDB')
 
     def mongodb_log(self, log_record='Unknown'):
-        if self.error:
-            log_record = str(self.error)
         doc = {'time': dt.now(), 'record': log_record}
         try:
             api_record = self.mongodb['mongodb_data']
@@ -29,10 +28,9 @@ class MongoDB(object):
         try:
             img_info = self.mongodb['mongodb_label']
             img_info.insert_one(doc)
-            # cursor = img_info.find({'user_id': username})
         except Exception:
-            self.error = Exception
-            # self.mongo_log()
+            log_record = 'fail to save label to MongoDB. Error: {}'.format(str(Exception))
+            MongoDB.mongodb_log(log_record)
             raise Exception
 
     def mongodb_search(self, key):
@@ -46,9 +44,10 @@ class MongoDB(object):
                     else:
                         result.append(col['twitter_id'])
             return result
-        except Exception as e:
-            self.error = e
-            raise e
+        except Exception:
+            log_record = 'fail to search keyword in MongoDB Database. Error: {}'.format(str(Exception))
+            MongoDB.mongodb_log(log_record)
+            raise Exception
         finally:
             self.mongodb_log('Search {} in mongodb.'.format(key))
 
@@ -59,9 +58,10 @@ class MongoDB(object):
             for i in api_log.find():
                 count = count + 1
             return count
-        except Exception as e:
-            self.error = e
-            raise e
+        except Exception:
+            log_record = 'fail to get overall logs in MongoDB Database. Error: {}'.format(str(Exception))
+            MongoDB.mongodb_log(log_record)
+            raise Exception
         finally:
             self.mongodb_log('Count logs in MongoDB.')
 
