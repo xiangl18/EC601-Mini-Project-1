@@ -4,19 +4,18 @@ from datetime import datetime as dt
 
 class MySQL(object):
     def __init__(self):
-        self.error = None
         try:
             self.connection = pymysql.connect(host='localhost',
                                               user='root',
                                               password='pass1122333',
                                               db='twitter_db',
                                               charset='utf8mb4')
-        except:
-            raise Exception('fail to connect to mysql.')
+        except Exception:
+            log_record = 'fail to connect to mysql. Error: {}'.format(str(Exception))
+            MySQL.mysql_log(log_record)
+            raise Exception('fail to connect to mysql')
 
     def mysql_log(self, log_record='Unknown'):
-        if self.error:
-            log_record = str(self.error)
         try:
             with self.connection.cursor() as cursor:
                 sql = "insert into `mysql_data`(`time`,`record`) values(%s,%s)"
@@ -34,8 +33,8 @@ class MySQL(object):
                 cursor.execute(sql, (username, label, url))
                 self.connection.commit()
         except Exception:
-            self.error = Exception
-            # self.mysql_log()
+            log_record = 'fail to save labels to MySQL Database. Error: {}'.format(str(Exception))
+            MySQL.mysql_log(log_record)
             self.connection.close()
             raise Exception
 
@@ -45,7 +44,8 @@ class MySQL(object):
                 cursor.execute('SELECT * FROM mysql_label WHERE label like "%{}%"'.format(key))
                 results = cursor.fetchall()
         except Exception:
-            self.error = Exception
+            log_record = 'fail to search keyword in MySQl Database. Error: {}'.format(str(Exception))
+            MySQL.mysql_log(log_record)
             self.connection.close()
             raise Exception
         finally:
@@ -61,10 +61,11 @@ class MySQL(object):
             with self.connection.cursor() as cursor:
                 cursor.execute('SELECT COUNT(*) FROM mysql_data')
                 result = cursor.fetchone()
-        except Exception as e:
-            self.error = e
+        except Exception:
+            log_record = 'fail to get overall report in MySQl Database. Error: {}'.format(str(Exception))
+            MySQL.mysql_log(log_record)
             self.connection.close()
-            raise e
+            raise Exception
         finally:
             self.mysql_log('Count logs in mysql_data.')
         return result
