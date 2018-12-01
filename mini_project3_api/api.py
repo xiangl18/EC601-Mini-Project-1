@@ -29,8 +29,6 @@ class DatabaseAPI(object):
         self.framerate = 1
         self.error = None
         self.id = 0
-        self.width = 900
-        self.height = 600
         while True:
             self.path = input('Please input path(Please add "\" at the end of your path):')
             # Provide a default
