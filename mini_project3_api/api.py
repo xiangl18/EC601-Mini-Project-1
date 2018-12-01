@@ -18,10 +18,10 @@ mongodb_api = mongodb.MongoDB()
 class DatabaseAPI(object):
 
     def __init__(self):
-        self.consumer_key = 'e1iimKWJXbW1xSZVN8tGMRzaL'
-        self.consumer_secret = 'BqE6n2QXF1n7KbZPAy0HVL8ZS2KLHEiGWcoW7ZX3UrX4KDOkcG'
-        self.access_token = '1039252031230365696-qKP1gGOODFBU3zPe0NY1HHV0u0lzw3'
-        self.access_token_secret = 'wna1Qg9FdzGa6wOc27fCana0qTxnmcc8bR5VxUXJgacF9'
+        self.consumer_key = ''
+        self.consumer_secret = ''
+        self.access_token = ''
+        self.access_token_secret = ''
         self.username = None
         self.output = {}
         self.url_list = []
