@@ -5,12 +5,12 @@ class MongoDB(object):
     def __init__(self):
         self.error = None
         try:
-            mongodb = pymongo.MongoClient('mongodb://localhost')
-            self.mongodb = mongodb['twitter_database']
+            mongoDB = pymongo.MongoClient('mongodb://localhost:27017/')
+            self.mongodb = mongoDB['twitter_database']
         except Exception:
             raise Exception('fail to connect to MongoDB')
 
-    def mongo_log(self, log_record='Unknown'):
+    def mongodb_log(self, log_record='Unknown'):
         if self.error:
             log_record = str(self.error)
         doc = {'time': dt.now(), 'record': log_record}
@@ -29,8 +29,10 @@ class MongoDB(object):
         try:
             img_info = self.mongodb['mongodb_label']
             img_info.insert_one(doc)
+            # cursor = img_info.find({'user_id': username})
         except Exception:
             self.error = Exception
+            # self.mongo_log()
             raise Exception
 
     def mongodb_search(self, key):
@@ -48,9 +50,9 @@ class MongoDB(object):
             self.error = e
             raise e
         finally:
-            self.mongo_log('Search {} in mongodb.'.format(key))
+            self.mongodb_log('Search {} in mongodb.'.format(key))
 
-    def mongo_statistics(self):
+    def mongodb_statistics(self):
         try:
             api_log = self.mongodb['mongodb_data']
             count = 0
@@ -61,5 +63,5 @@ class MongoDB(object):
             self.error = e
             raise e
         finally:
-            self.mongo_log('Count logs in MongoDB.')
+            self.mongodb_log('Count logs in MongoDB.')
 

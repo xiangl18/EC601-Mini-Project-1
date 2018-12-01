@@ -13,7 +13,7 @@ import mongodb
 
 
 mysql_api = mysql.MySQL()
-mongobd_api = mongodb.MongoDB()
+mongodb_api = mongodb.MongoDB()
 
 class DatabaseAPI(object):
 
@@ -29,6 +29,8 @@ class DatabaseAPI(object):
         self.framerate = 1
         self.error = None
         self.id = 0
+        self.width = 900
+        self.height = 600
         while True:
             self.path = input('Please input path(Please add "\" at the end of your path):')
             # Provide a default
@@ -72,7 +74,7 @@ class DatabaseAPI(object):
         finally:
             log_record = 'download {count} images from @{name}'.format(count=count, name=self.username)
             mysql_api.mysql_log(log_record)
-            mongobd_api.mongo_log(log_record)
+            mongodb_api.mongodb_log(log_record)
 
     # get images by searching from a user's timeline.
     def search_images(self):
@@ -145,7 +147,7 @@ class DatabaseAPI(object):
                 for label in labels:
                     label_list.append(label.description)
                     mysql_api.save_label(self.username, label.description, url)
-                    mongobd_api.save_label(self.username, label, url)
+                    mongodb_api.save_label(self.username, label.description, url)
 
                 # make srt ----
                 for i in range(len(label_list)):
@@ -168,7 +170,7 @@ class DatabaseAPI(object):
         finally:
             log_record = '{} images are labeled'.format(list_len)
             mysql_api.mysql_log(log_record)
-            mongobd_api.mongo_log(log_record)
+            mongodb_api.mongodb_log(log_record)
 
     def process_video(self):
         # -y for output file overwrite
@@ -185,12 +187,12 @@ class DatabaseAPI(object):
             subprocess.call(cmd2, shell=True)
             log_record = "video is created"
             mysql_api.mysql_log(log_record)
-            mongobd_api.mongo_log(log_record)
+            # mongobd_api.mongo_log(log_record)
         except Exception:
             self.error = Exception
             log_record = "fail to create video"
             mysql_api.mysql_log(log_record)
-            mongobd_api.mongo_log(log_record)
+            mongodb_api.mongodb_log(log_record)
             raise Exception
 
     def search(self, key):
@@ -198,7 +200,7 @@ class DatabaseAPI(object):
         print('In MySQL Database, The users with keyword {} are as follows:'.format(key))
         for user in users_mysql:
             print(user)
-        users_mongodb = mongobd_api.mongodb_search(key)
+        users_mongodb = mongodb_api.mongodb_search(key)
         print('In MongoDB Database, The users with keyword {} are as follows:'.format(key))
         for user in users_mongodb:
             print(user)
@@ -206,5 +208,5 @@ class DatabaseAPI(object):
     def statistics(self):
         mysql_record = mysql_api.mysql_statistics()
         print(mysql_record[0], 'logs in MySQL Database.')
-        mongodb_record  = mongobd_api.mongo_statistics()
+        mongodb_record  = mongodb_api.mongodb_statistics()
         print(mongodb_record, 'logs in MongoDB Databse.')
