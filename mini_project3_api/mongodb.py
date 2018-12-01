@@ -64,7 +64,6 @@ class MongoDB(object):
                 collection.append(result['labels'])
             for i in collection1.find():
                 count = count + 1
-            return count, Counter(collection).most_common(3)
         except Exception:
             log_record = 'fail to get overall report in MongoDB Database. Error: {}'.format(str(Exception))
             MongoDB.mongodb_log(log_record)
@@ -72,3 +71,4 @@ class MongoDB(object):
         finally:
             self.mongodb_log('Count logs in MongoDB.')
             self.mongodb_log('Find 3 most popular labels in MongoDB.')
+            return count, Counter(collection).most_common(3)
