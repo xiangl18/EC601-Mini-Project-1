@@ -1,5 +1,7 @@
 import pymongo
 from datetime import datetime as dt
+from collections import Counter
+
 
 class MongoDB(object):
     def __init__(self):
@@ -53,14 +55,20 @@ class MongoDB(object):
 
     def mongodb_statistics(self):
         try:
-            api_log = self.mongodb['mongodb_data']
+            collection1 = self.mongodb['mongodb_data']
+            collection2 = self.mongodb['mongodb_label']
             count = 0
-            for i in api_log.find():
+            results = collection2.find().sort('labels', pymongo.ASCENDING)
+            collection = []
+            for result in results:
+                collection.append(result['labels'])
+            for i in collection1.find():
                 count = count + 1
-            return count
+            return count, Counter(collection).most_common(3)
         except Exception:
             log_record = 'fail to get overall report in MongoDB Database. Error: {}'.format(str(Exception))
             MongoDB.mongodb_log(log_record)
             raise Exception
         finally:
             self.mongodb_log('Count logs in MongoDB.')
+            self.mongodb_log('Find 3 most popular labels in MongoDB.')
