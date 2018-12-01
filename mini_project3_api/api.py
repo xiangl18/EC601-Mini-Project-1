@@ -26,7 +26,7 @@ class DatabaseAPI(object):
         self.output = {}
         self.url_list = []
         self.name_list = []
-        self.framerate = 1
+        self.framerate = 1 # As default
         self.error = None
         self.id = 0
         while True:
