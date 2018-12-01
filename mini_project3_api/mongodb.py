@@ -59,9 +59,8 @@ class MongoDB(object):
                 count = count + 1
             return count
         except Exception:
-            log_record = 'fail to get overall logs in MongoDB Database. Error: {}'.format(str(Exception))
+            log_record = 'fail to get overall report in MongoDB Database. Error: {}'.format(str(Exception))
             MongoDB.mongodb_log(log_record)
             raise Exception
         finally:
             self.mongodb_log('Count logs in MongoDB.')
-
