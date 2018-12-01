@@ -70,6 +70,9 @@ class DatabaseAPI(object):
                         media_files.add(media[0]['media_url'])
 
         except tweepy.error.TweepError:
+            log_record = 'Error: {}'.format(str(tweepy.error.TweepError))
+            mysql_api.mysql_log(log_record)
+            mongodb_api.mongodb_log(log_record)
             print('error')
         finally:
             log_record = 'download {count} images from @{name}'.format(count=count, name=self.username)
@@ -83,6 +86,9 @@ class DatabaseAPI(object):
             auth.set_access_token(self.access_token, self.access_token_secret)
             api = tweepy.API(auth)
         except tweepy.error.TweepError:
+            log_record = 'Error: {}'.format(str(tweepy.error.TweepError))
+            mysql_api.mysql_log(log_record)
+            mongodb_api.mongodb_log(log_record)
             raise Warning('fail to access the twitter by using key')
 
         keyword = input('Please input a searching keyword：')
@@ -91,6 +97,9 @@ class DatabaseAPI(object):
         for user in users:
             user_list.append(user.name)
         if len(user_list) == 0:
+            log_record = 'Warning: No result found'
+            mysql_api.mysql_log(log_record)
+            mongodb_api.mongodb_log(log_record)
             raise Warning("No result found")
 
         for name in user_list:
@@ -108,7 +117,15 @@ class DatabaseAPI(object):
                 for media_file in media_files:
                     wget.download(media_file, out=self.path)
             except tweepy.error.TweepError:
+                log_record = 'Error: {}'.format(str(tweepy.error.TweepError))
+                mysql_api.mysql_log(log_record)
+                mongodb_api.mongodb_log(log_record)
                 print('error')
+            finally:
+                find = len(media_files)
+                log_record = '{} images are found and downloaded'.format(find)
+                mysql_api.mysql_log(log_record)
+                mongodb_api.mongodb_log(log_record)
 
     # resize images
     def image_process(self):
@@ -126,6 +143,9 @@ class DatabaseAPI(object):
             credentials = service_account.Credentials.from_service_account_file(filename)
             client = vision.ImageAnnotatorClient(credentials=credentials)
         except:
+            log_record = 'fail to add the json file'
+            mysql_api.mysql_log(log_record)
+            mongodb_api.mongodb_log(log_record)
             raise Warning("fail to add the json file")
 
         try:
@@ -166,6 +186,9 @@ class DatabaseAPI(object):
                 n = n + 1
         except Exception:
             self.error = Exception
+            log_record = 'fail to create srt. Error: {}'.format(str(self.error))
+            mysql_api.mysql_log(log_record)
+            mongodb_api.mongodb_log(log_record)
             raise Exception
         finally:
             log_record = '{} images are labeled'.format(list_len)
@@ -178,7 +201,6 @@ class DatabaseAPI(object):
         # -i for input files
         # -vf for adding subtitles for output video
         try:
-
             cmd1 = 'ffmpeg -y -r ' + str(
                 self.framerate) + ' -i '+ self.path +'/{img}_'.format(img=self.username) + '%01d.jpg' + ' -vf scale=960:540 ' + self.path + '/OutputVideo.mkv'
             subprocess.call(cmd1, shell=True)
@@ -190,7 +212,7 @@ class DatabaseAPI(object):
             # mongobd_api.mongo_log(log_record)
         except Exception:
             self.error = Exception
-            log_record = "fail to create video"
+            log_record = 'fail to create video. Error:{}'.format(str(self.error))
             mysql_api.mysql_log(log_record)
             mongodb_api.mongodb_log(log_record)
             raise Exception
