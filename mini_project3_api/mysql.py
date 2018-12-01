@@ -1,5 +1,6 @@
 import pymysql
 from datetime import datetime as dt
+from collections import Counter
 
 
 class MySQL(object):
@@ -61,6 +62,10 @@ class MySQL(object):
             with self.connection.cursor() as cursor:
                 cursor.execute('SELECT COUNT(*) FROM mysql_data')
                 result = cursor.fetchone()
+                cursor.execute('SELECT (label) FROM mysql_label')
+                collection = []
+                for (c,) in cursor.fetchall():
+                    collection.append(c)
         except Exception:
             log_record = 'fail to get overall report in MySQl Database. Error: {}'.format(str(Exception))
             MySQL.mysql_log(log_record)
@@ -68,4 +73,5 @@ class MySQL(object):
             raise Exception
         finally:
             self.mysql_log('Count logs in mysql_data.')
-        return result
+            self.mysql_log('Find 3 most popular labels in MySQL.')
+        return result, Counter(collection).most_common(3)
