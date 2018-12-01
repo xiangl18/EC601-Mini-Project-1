@@ -29,8 +29,6 @@ class DatabaseAPI(object):
         self.framerate = 1
         self.error = None
         self.id = 0
-        self.width = 900
-        self.height = 600
         while True:
             self.path = input('Please input path(Please add "\" at the end of your path):')
             # Provide a default
@@ -187,7 +185,7 @@ class DatabaseAPI(object):
             subprocess.call(cmd2, shell=True)
             log_record = "video is created"
             mysql_api.mysql_log(log_record)
-            # mongobd_api.mongo_log(log_record)
+            mongobd_api.mongo_log(log_record)
         except Exception:
             self.error = Exception
             log_record = "fail to create video"
