@@ -16,8 +16,8 @@ class MongoDB(object):
     def mongodb_log(self, log_record='Unknown'):
         doc = {'time': dt.now(), 'record': log_record}
         try:
-            api_record = self.mongodb['mongodb_data']
-            api_record.insert_one(doc)
+            data = self.mongodb['mongodb_data']
+            data.insert_one(doc)
         except Exception:
             raise Exception
 
@@ -28,8 +28,8 @@ class MongoDB(object):
             'img_url': url,
         }
         try:
-            img_info = self.mongodb['mongodb_label']
-            img_info.insert_one(doc)
+            label = self.mongodb['mongodb_label']
+            label.insert_one(doc)
         except Exception:
             log_record = 'fail to save label to MongoDB. Error: {}'.format(str(Exception))
             MongoDB.mongodb_log(log_record)
@@ -38,13 +38,13 @@ class MongoDB(object):
     def mongodb_search(self, key):
         result = []
         try:
-            img_info = self.mongodb['mongodb_label']
-            for col in img_info.find():
-                if key in col['labels']:
-                    if col['twitter_id'] in result:
+            label = self.mongodb['mongodb_label']
+            for c in label.find():
+                if key in c['labels']:
+                    if c['twitter_id'] in result:
                         continue
                     else:
-                        result.append(col['twitter_id'])
+                        result.append(c['twitter_id'])
             return result
         except Exception:
             log_record = 'fail to search keyword in MongoDB Database. Error: {}'.format(str(Exception))
