@@ -213,7 +213,7 @@ class DatabaseAPI(object):
             subprocess.call(cmd2, shell=True)
             log_record = "video is created"
             mysql_api.mysql_log(log_record)
-            mongodb_api.mongo_log(log_record)
+            mongodb_api.mongodb_log(log_record)
         except Exception:
             self.error = Exception
             log_record = 'fail to create video. Error:{}'.format(str(self.error))
