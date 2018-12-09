@@ -31,12 +31,12 @@ A twitter api used in mini project 1:
 ```Bash
 $ python -m pip install tweepy
 ```
-Also, please make sure to replace following lines in api.py with your own twitter api keys:
+Also, please make sure to replace following lines in test1.py with your own twitter api keys when testing the api:
 ```Python
-self.consumer_key = ''
-self.consumer_secret = ''
-self.access_token = ''
-self.access_token_secret = ''
+consumer_key = ''
+consumer_secret = ''
+access_token = ''
+access_token_secret = ''
 ```
 #### 4. googlevision  
 A google vision api used in mini project 1:
